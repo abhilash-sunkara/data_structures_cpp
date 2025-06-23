@@ -19,21 +19,27 @@ struct node* find_node(struct node*, int);
 void remove(struct node*, int);
 struct node* get_successor(struct node*);
 struct node* get_predecessor(struct node*);
+void in_order(struct node*);
+void pre_order(struct node*);
+void post_order(struct node*);
 
 int main(){
-    struct node* b_tree = initialize_tree(8);
-    add(b_tree, 5);
-    add(b_tree, 3);
-    add(b_tree, 6);
-    add(b_tree, 12);
-    add(b_tree, 10);
-    add(b_tree, 14);
-    /* add(b_tree, 6); */
-    /* printf("%d\n", find(b_tree, 5));
-    printf("%d\n", find(b_tree, 7)); */
+    struct node* bst = initialize_tree(8);
+    add(bst, 5);
+    add(bst, 3);
+    add(bst, 6);
+    add(bst, 12);
+    add(bst, 10);
+    add(bst, 14);
+    /* add(bst, 6); */
+    /* printf("%d\n", find(bst, 5));
+    printf("%d\n", find(bst, 7)); */
 
-    remove(b_tree, 12);
-    remove(b_tree, 5);
+    in_order(bst);
+    printf("\n");
+    pre_order(bst);
+    printf("\n");
+    post_order(bst);
 }
 
 struct node* initialize_tree(int x){
@@ -176,3 +182,28 @@ struct node* get_predecessor(struct node* nb){
     }
     return temp;
 }
+
+void in_order(struct node* nb){
+    if(nb->left_ptr != NULL)
+        pre_order(nb->left_ptr);
+    printf("%d\n", nb->val);
+    if(nb->right_ptr != NULL)
+        pre_order(nb->right_ptr);
+}
+
+void pre_order(struct node* nb){
+    printf("%d\n", nb->val);
+    if(nb->left_ptr != NULL)
+        pre_order(nb->left_ptr);
+    if(nb->right_ptr != NULL)
+        pre_order(nb->right_ptr);
+}
+
+void post_order(struct node* nb){
+    if(nb->left_ptr != NULL)
+        pre_order(nb->left_ptr);
+    if(nb->right_ptr != NULL)
+        pre_order(nb->right_ptr);
+    printf("%d\n", nb->val);
+}
+
