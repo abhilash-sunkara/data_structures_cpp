@@ -185,10 +185,10 @@ struct node* get_predecessor(struct node* nb){
 
 void in_order(struct node* nb){
     if(nb->left_ptr != NULL)
-        pre_order(nb->left_ptr);
+        in_order(nb->left_ptr);
     printf("%d\n", nb->val);
     if(nb->right_ptr != NULL)
-        pre_order(nb->right_ptr);
+        in_order(nb->right_ptr);
 }
 
 void pre_order(struct node* nb){
@@ -201,9 +201,9 @@ void pre_order(struct node* nb){
 
 void post_order(struct node* nb){
     if(nb->left_ptr != NULL)
-        pre_order(nb->left_ptr);
+        post_order(nb->left_ptr);
     if(nb->right_ptr != NULL)
-        pre_order(nb->right_ptr);
+        post_order(nb->right_ptr);
     printf("%d\n", nb->val);
 }
 
