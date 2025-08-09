@@ -11,6 +11,7 @@ struct graph {
 struct edge {
     struct vertex* node1;
     struct vertex* node2;
+    int weight;
 };
 
 struct vertex {
@@ -19,10 +20,10 @@ struct vertex {
 
 struct graph* create_graph();
 struct vertex* create_vertex(int);
-struct edge* create_edge(struct vertex*, struct vertex*);
+struct edge* create_edge(struct vertex*, struct vertex*, int);
 
 void add_vertex(struct graph*, int);
-void add_edge(struct graph*, int, int);
+void add_edge(struct graph*, int, int, int);
 
 int find_vertex(struct graph*, int);
 struct vertex* get_vertex(struct graph*, int);
@@ -36,6 +37,8 @@ void remove_vertex(struct graph*, int);
 void remove_edge(struct graph*, int, int);
 void remove_all_edges(struct graph*, int);
 
+int get_weight(struct graph*, int, int);
+
 int main (){
     struct graph* graph = create_graph();
     add_vertex(graph, 2);
@@ -43,8 +46,8 @@ int main (){
     add_vertex(graph, 5);
     /* std::cout << find_vertex(graph, 2) << std::endl;
     std::cout << find_vertex(graph, 4) << std::endl; */
-    add_edge(graph, 2, 4);
-    add_edge(graph, 4, 5);
+    add_edge(graph, 2, 4, 5);
+    add_edge(graph, 4, 5, 3);
     /* print_edges(graph); */
     get_neighbours(graph, 2);
     get_neighbours(graph, 4);
@@ -92,19 +95,20 @@ struct vertex* get_vertex(struct graph* g, int x){
     return NULL;
 }
 
-void add_edge(struct graph* g, int x, int y){
+void add_edge(struct graph* g, int x, int y, int w){
     struct vertex* v1 = get_vertex(g, x);
     struct vertex* v2 = get_vertex(g, y);
     if(v2 != NULL && v2 != NULL){
         /* std::cout << "creating edge" << std::endl; */
-        g->edges.push_back(create_edge(v1, v2));
+        g->edges.push_back(create_edge(v1, v2, w));
     }
 }
 
-struct edge* create_edge(struct vertex* x, struct vertex* y){
+struct edge* create_edge(struct vertex* x, struct vertex* y, int w){
     struct edge* temp = (struct edge*) malloc(sizeof(struct edge));
     temp->node1 = x;
     temp->node2 = y;
+    temp->weight = w;
     return temp;
 }
 
@@ -168,4 +172,18 @@ void remove_vertex(struct graph* g, int x){
             g->vertices.erase(g->vertices.begin() + i);
         }
     }
+}
+
+int get_weight(graph* g, int x, int y){
+    for(struct edge* e : g->edges){
+        if(e->node1->val == x && e->node2->val == y){
+            std::cout<< "Edge with " << e->node1->val << " and " << e->node2->val << " has a weight of " << e->weight << std::endl;
+            return e->weight;
+        } else if (e->node2->val == x && e->node1->val == y){
+            std::cout<< "Edge with " << e->node1->val << " and " << e->node2->val << " has a weight of " << e->weight << std::endl;
+            return e->weight;
+        }
+    }
+    std::cout<< "Can't find an edge with " << x << " and " << y << std::endl;
+    return 0;
 }
